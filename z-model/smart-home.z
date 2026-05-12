@@ -1,1 +1,67 @@
+[USER]
 
+STATUS ::= on | off
+DOOR ::= locked | unlocked
+ALARM ::= active | inactive
+TEMP ::= safe | high
+
+SmartHome
+light : STATUS
+door : DOOR
+alarm : ALARM
+temp : TEMP
+authorized : ℙ USER
+loggedIn : ℙ USER
+
+
+// invariants 
+
+door ∈ {locked, unlocked}
+alarm = active ⇒ door = locked
+temp = high ⇒ alarm = active
+
+
+// Login operation 
+
+Login
+Δ SmartHome
+u? : USER
+u? ∈ authorized
+loggedIn' = loggedIn ∪ {u?}
+
+// Lock door operation
+
+LockDoor
+Δ SmartHome
+door = unlocked
+door' = locked
+
+// Turn ON light Operation
+
+TurnOnLight
+Δ SmartHome
+light = off
+light' = on
+
+// Activate alarm operation
+
+ActivateAlarm
+Δ SmartHome
+alarm = inactive
+alarm' = active
+
+// State transition for light 
+
+OFF → ON → OFF
+
+// State transition for Door
+
+UNLOCKED → LOCKED → UNLOCKED
+
+// State transition for Alarm
+
+INACTIVE → ACTIVE
+
+// State transition for Temperature
+
+SAFE → HIGH
