@@ -6,16 +6,13 @@ ALARM = <ACTIVE> | <INACTIVE>;
 TEMP = <SAFE> | <HIGH>;
 
 
--- STATE DEFINITION --
+-- state --
 
 state SmartHome of
     light : STATUS
     door : DOOR
     alarm : ALARM
     temp : TEMP
-
--- INVARIANTS --
-
 inv mk_SmartHome(light, door, alarm, temp) ==
     (door = <LOCKED> or door = <UNLOCKED>) and
     (alarm = <ACTIVE> => door = <LOCKED>)
@@ -24,50 +21,64 @@ end
 
 -- operations --
 
+
 TurnOnLight : () ==> ()
-TurnOnLight()
-ext wr light : STATUS
+TurnOnLight() ==
+(
+    light := <ON>
+)
 pre light = <OFF>
 post light = <ON>;
 
 
 TurnOffLight : () ==> ()
-TurnOffLight()
-ext wr light : STATUS
+TurnOffLight() ==
+(
+    light := <OFF>
+)
 pre light = <ON>
 post light = <OFF>;
 
 
 LockDoor : () ==> ()
-LockDoor()
-ext wr door : DOOR
+LockDoor() ==
+(
+    door := <LOCKED>
+)
 pre door = <UNLOCKED>
 post door = <LOCKED>;
 
 
 UnlockDoor : () ==> ()
-UnlockDoor()
-ext wr door : DOOR
+UnlockDoor() ==
+(
+    door := <UNLOCKED>
+)
 pre door = <LOCKED>
 post door = <UNLOCKED>;
 
 
 ActivateAlarm : () ==> ()
-ActivateAlarm()
-ext wr alarm : ALARM
+ActivateAlarm() ==
+(
+    alarm := <ACTIVE>
+)
 pre alarm = <INACTIVE>
 post alarm = <ACTIVE>;
 
 
 DeactivateAlarm : () ==> ()
-DeactivateAlarm()
-ext wr alarm : ALARM
+DeactivateAlarm() ==
+(
+    alarm := <INACTIVE>
+)
 pre alarm = <ACTIVE>
 post alarm = <INACTIVE>;
 
 
 CheckTemperature : () ==> ()
-CheckTemperature()
-ext rd temp : TEMP
+CheckTemperature() ==
+(
+    skip
+)
 post temp = <HIGH> => alarm = <ACTIVE>;
-
